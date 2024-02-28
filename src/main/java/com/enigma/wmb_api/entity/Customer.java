@@ -1,5 +1,6 @@
 package com.enigma.wmb_api.entity;
 
+import com.enigma.wmb_api.constant.ConstantTable;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +14,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "m_customer", schema = "public", catalog = "wmb_api_db")
+@Table(name = ConstantTable.CUSTOMER, schema = "public", catalog = "wmb_api_db")
 public class Customer {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id

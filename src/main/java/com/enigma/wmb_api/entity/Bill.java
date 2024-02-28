@@ -1,5 +1,6 @@
 package com.enigma.wmb_api.entity;
 
+import com.enigma.wmb_api.constant.ConstantTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -14,7 +15,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "t_bill", schema = "public", catalog = "wmb_api_db")
+@Table(name = ConstantTable.TRANSACTION, schema = "public", catalog = "wmb_api_db")
 public class Bill {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id
@@ -30,7 +31,7 @@ public class Bill {
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "table_id", referencedColumnName = "id")
-    private MTable mtable;
+    private DinningTable mtable;
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "trans_type", referencedColumnName = "id", nullable = false)

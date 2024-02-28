@@ -1,9 +1,8 @@
 package com.enigma.wmb_api.entity;
 
+import com.enigma.wmb_api.constant.ConstantTable;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Objects;
 
 @Setter
 @Getter
@@ -11,8 +10,8 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "m_table", schema = "public", catalog = "wmb_api_db")
-public class MTable {
+@Table(name = ConstantTable.DINNING_TABLE, schema = "public", catalog = "wmb_api_db")
+public class DinningTable {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id
     @Column(name = "id")
