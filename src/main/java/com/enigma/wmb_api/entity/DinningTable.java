@@ -12,7 +12,7 @@ import lombok.*;
 @Entity
 @Table(name = ConstantTable.DINNING_TABLE, schema = "public", catalog = "wmb_api_db")
 public class DinningTable {
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
     private String id;
