@@ -25,7 +25,7 @@ public class Menu {
     private String name;
     @Basic
     @Column(name = "price")
-    private Double price;
+    private Integer price;
     @JsonManagedReference
     @OneToMany(mappedBy = "menu")
     private Collection<BillDetail> billDetails;

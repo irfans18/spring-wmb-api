@@ -21,10 +21,10 @@ public class BillDetail {
     private String id;
     @Basic
     @Column(name = "qty")
-    private Double qty;
+    private Integer qty;
     @Basic
     @Column(name = "price")
-    private Double price;
+    private Integer price;
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "bill_id", referencedColumnName = "id")
