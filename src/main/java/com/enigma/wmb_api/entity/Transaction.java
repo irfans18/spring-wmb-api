@@ -23,7 +23,7 @@ public class Transaction {
     private String id;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "trans_date")
-    private Date transDate;
+    private Date trxDate;
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -35,7 +35,7 @@ public class Transaction {
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "trans_type", referencedColumnName = "id")
-    private TransType transType;
+    private TransType trxType;
     @JsonManagedReference
     @OneToMany(mappedBy = "transaction")
     private Collection<BillDetail> billDetails;

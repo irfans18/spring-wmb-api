@@ -1,7 +1,19 @@
-package com.enigma.wmb_api.entity;
+package com.enigma.wmb_api.model.response;
+
+import com.enigma.wmb_api.entity.BillDetail;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 /**
- * DTO for {@link com.enigma.wmb_api.entity.BillDetail}
+ * DTO for {@link BillDetail}
  */
-public class BillDetailDto {
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+public class BillDetailResponse {
+    private String menuId;
+    private Integer qty;
+    private Integer price;
 }

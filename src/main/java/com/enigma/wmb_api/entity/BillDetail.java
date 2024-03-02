@@ -24,7 +24,7 @@ public class BillDetail {
     @Column(name = "price")
     private Integer price;
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "bill_id", referencedColumnName = "id")
     private Transaction transaction;
     @JsonBackReference

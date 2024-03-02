@@ -1,4 +1,10 @@
 package com.enigma.wmb_api.repo;
 
-public interface BillDetailRepo extends org.springframework.data.jpa.repository.JpaRepository<com.enigma.wmb_api.entity.BillDetail, java.lang.String> ,org.springframework.data.jpa.repository.JpaSpecificationExecutor<com.enigma.wmb_api.entity.BillDetail> {
+import com.enigma.wmb_api.entity.BillDetail;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface BillDetailRepo extends JpaRepository<BillDetail, String>, JpaSpecificationExecutor<BillDetail> {
 }
