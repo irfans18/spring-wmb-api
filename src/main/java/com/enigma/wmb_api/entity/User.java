@@ -25,7 +25,13 @@ public class User {
     @Basic
     @Column(name = "phone_number")
     private String phoneNumber;
+    @Basic
+    @Column(name = "status", columnDefinition = "boolean default true")
+    private Boolean status;
     @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private Collection<Transaction> transactions;
+    @ManyToOne
+    @JoinColumn(name = "credential_id")
+    private UserCredential credential;
 }

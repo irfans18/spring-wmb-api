@@ -1,4 +1,10 @@
 package com.enigma.wmb_api.repo;
 
-public interface UserCredentialRepo extends org.springframework.data.jpa.repository.JpaRepository<com.enigma.wmb_api.entity.UserCredential, java.lang.String> {
+import com.enigma.wmb_api.entity.UserCredential;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface UserCredentialRepo extends JpaRepository<UserCredential, String> {
+    Optional<UserCredential> findFirstByUsername(String username);
 }

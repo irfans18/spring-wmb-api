@@ -1,17 +1,17 @@
-package com.enigma.enigma_shop.service.impl;
+package com.enigma.wmb_api.service.impl;
 
-import com.enigma.enigma_shop.constant.UserRole;
-import com.enigma.enigma_shop.dto.request.AuthRequest;
-import com.enigma.enigma_shop.dto.response.LoginResponse;
-import com.enigma.enigma_shop.dto.response.RegisterResponse;
-import com.enigma.enigma_shop.entity.Customer;
-import com.enigma.enigma_shop.entity.Role;
-import com.enigma.enigma_shop.entity.UserCredential;
-import com.enigma.enigma_shop.repo.UserCredentialRepo;
-import com.enigma.enigma_shop.service.AuthService;
-import com.enigma.enigma_shop.service.CustomerService;
-import com.enigma.enigma_shop.service.JwtService;
-import com.enigma.enigma_shop.service.RoleService;
+import com.enigma.wmb_api.constant.UserRole;
+import com.enigma.wmb_api.entity.Role;
+import com.enigma.wmb_api.entity.User;
+import com.enigma.wmb_api.entity.UserCredential;
+import com.enigma.wmb_api.model.request.AuthRequest;
+import com.enigma.wmb_api.model.response.LoginResponse;
+import com.enigma.wmb_api.model.response.RegisterResponse;
+import com.enigma.wmb_api.repo.UserCredentialRepo;
+import com.enigma.wmb_api.service.AuthService;
+import com.enigma.wmb_api.service.JwtService;
+import com.enigma.wmb_api.service.RoleService;
+import com.enigma.wmb_api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -23,18 +23,18 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-@Transactional(rollbackFor = Exception.class)
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class AuthServiceImpl implements AuthService {
     private final UserCredentialRepo credentialRepo;
     private final RoleService roleService;
-    private final CustomerService customerService;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     @Override
     public RegisterResponse resgisterUser(AuthRequest request) throws DataIntegrityViolationException {
-        Role role = roleService.getOrSave(UserRole.ROLE_CUSTOMER);
+        Role role = roleService.getOrCreate(UserRole.ROLE_CUSTOMER);
 
         UserCredential credential = UserCredential.builder()
                 .username(request.getUsername())
@@ -44,12 +44,12 @@ public class AuthServiceImpl implements AuthService {
                 .build();
         credentialRepo.saveAndFlush(credential);
 
-        Customer customer = Customer.builder()
+        User user = User.builder()
                 .status(true)
                 .credential(credential)
                 .build();
 
-        customerService.create(customer);
+        userService.create(user);
 
         List<String> roles = credential.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         return RegisterResponse.builder()
@@ -76,11 +76,6 @@ public class AuthServiceImpl implements AuthService {
                     .build();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "invalid credentials");
-    }
-
-    @Override
-    public LoginResponse loginAdmin(AuthRequest request) {
-        return null;
     }
 
     @Override

@@ -1,11 +1,12 @@
-package com.enigma.wmb_api.model.response;
+package com.enigma.wmb_api.service;
 
-import com.enigma.wmb_api.model.request.AuthRequest;
+import com.enigma.wmb_api.entity.User;
 
 public interface UserService {
 
-    RegisterResponse createUser(AuthRequest request);
-    LoginResponse login(AuthRequest request);
-    User 
+    User create(User request);
+    User update(User request);
+    User findOrFail(String id);
+    void delete(String id);
 
 }
