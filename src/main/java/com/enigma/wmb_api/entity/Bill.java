@@ -34,7 +34,7 @@ public class Bill {
     private DinningTable mtable;
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "trans_type", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "trans_type", referencedColumnName = "id")
     private TransType transType;
     @JsonManagedReference
     @OneToMany(mappedBy = "bill")
