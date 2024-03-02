@@ -20,7 +20,7 @@ public class TransTypeServiceImpl implements TransTypeService {
     }
 
     @Override
-    public TransType findByIdOrThrowError(String id) {
+    public TransType findOrFail(String id) {
         return repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "TransType not found"));
     }
 
@@ -29,15 +29,10 @@ public class TransTypeServiceImpl implements TransTypeService {
         return repo.findAll();
     }
 
-    @Override
-    public TransType update(TransType transType) {
-        findByIdOrThrowError(transType.getId());
-        return repo.saveAndFlush(transType);
-    }
 
     @Override
     public void delete(String id) {
-        TransType transType = findByIdOrThrowError(id);
+        TransType transType = findOrFail(id);
         repo.delete(transType);
     }
 }

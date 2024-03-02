@@ -2,6 +2,9 @@ package com.enigma.wmb_api.model.response;
 
 import lombok.*;
 
+/**
+ * DTO for {@link com.enigma.wmb_api.Paging}
+ */
 @Setter
 @Getter
 @NoArgsConstructor
