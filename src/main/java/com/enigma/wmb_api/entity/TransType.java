@@ -23,6 +23,6 @@ public class TransType {
     @Column(name = "description")
     private String description;
     @JsonManagedReference
-    @OneToMany(mappedBy = "transType")
+    @OneToMany(mappedBy = "trxType")
     private Collection<Transaction> transactions;
 }
