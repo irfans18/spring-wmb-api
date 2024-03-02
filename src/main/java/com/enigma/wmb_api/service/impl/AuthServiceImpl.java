@@ -32,10 +32,8 @@ public class AuthServiceImpl implements AuthService {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    @Override
-    public RegisterResponse resgisterUser(AuthRequest request) throws DataIntegrityViolationException {
-        Role role = roleService.getOrCreate(UserRole.ROLE_CUSTOMER);
 
+    private RegisterResponse register(AuthRequest request, Role role) {
         UserCredential credential = UserCredential.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -59,9 +57,19 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public RegisterResponse resgisterAdmin(AuthRequest request) {
-        return null;
+    public RegisterResponse resgisterUser(AuthRequest request) throws DataIntegrityViolationException {
+        Role role = roleService.getOrCreate(UserRole.ROLE_CUSTOMER);
+
+        return register(request, role);
     }
+
+    @Override
+    public RegisterResponse resgisterAdmin(AuthRequest request) throws DataIntegrityViolationException {
+        Role role = roleService.getOrCreate(UserRole.ROLE_ADMIN);
+
+        return register(request, role);
+    }
+
 
     @Override
     public LoginResponse login(AuthRequest request) {

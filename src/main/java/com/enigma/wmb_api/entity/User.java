@@ -31,7 +31,7 @@ public class User {
     @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private Collection<Transaction> transactions;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "credential_id")
     private UserCredential credential;
 }
