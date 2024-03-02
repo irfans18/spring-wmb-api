@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Collection;
-import java.util.Objects;
 
 @Setter
 @Getter
@@ -25,5 +24,5 @@ public class TransType {
     private String description;
     @JsonManagedReference
     @OneToMany(mappedBy = "transType")
-    private Collection<Bill> bills;
+    private Collection<Transaction> transactions;
 }

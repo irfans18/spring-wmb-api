@@ -16,7 +16,7 @@ import java.util.Collection;
 @Builder
 @Entity
 @Table(name = ConstantTable.TRANSACTION, schema = "public", catalog = "wmb_api_db")
-public class Bill {
+public class Transaction {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id
     @Column(name = "id")
@@ -26,18 +26,18 @@ public class Bill {
     private Date transDate;
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    private Customer customer;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "table_id", referencedColumnName = "id")
-    private DinningTable mtable;
+    private DinningTable dinningTable;
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "trans_type", referencedColumnName = "id")
     private TransType transType;
     @JsonManagedReference
-    @OneToMany(mappedBy = "bill")
+    @OneToMany(mappedBy = "transaction")
     private Collection<BillDetail> billDetails;
 
 }

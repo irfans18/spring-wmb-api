@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Collection;
-import java.util.Objects;
 
 @Setter
 @Getter
@@ -15,7 +14,7 @@ import java.util.Objects;
 @Builder
 @Entity
 @Table(name = ConstantTable.CUSTOMER, schema = "public", catalog = "wmb_api_db")
-public class Customer {
+public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id
     @Column(name = "id")
@@ -27,6 +26,6 @@ public class Customer {
     @Column(name = "phone_number")
     private String phoneNumber;
     @JsonManagedReference
-    @OneToMany(mappedBy = "customer")
-    private Collection<Bill> bills;
+    @OneToMany(mappedBy = "user")
+    private Collection<Transaction> transactions;
 }

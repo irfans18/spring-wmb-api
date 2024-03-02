@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Objects;
-
 @Setter
 @Getter
 @NoArgsConstructor
@@ -28,7 +26,7 @@ public class BillDetail {
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "bill_id", referencedColumnName = "id")
-    private Bill bill;
+    private Transaction transaction;
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "menu_id", referencedColumnName = "id")
