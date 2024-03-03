@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="JpaPluginProjectSettings" repositoryClassNamePostfix="Repo" dtoSerializableType="2">
+  <component name="JpaPluginProjectSettings" repositoryClassNamePostfix="Repo" dtoSerializableType="2" dtoClassNamePostfix="">
     <option name="entityNameTemplate" />
     <option name="generateSerialVersionUID" value="true" />
     <option name="isLombokBuilder" value="true" />
