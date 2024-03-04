@@ -1,11 +1,14 @@
 package com.enigma.wmb_api.service.impl;
 
+import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.entity.Menu;
 import com.enigma.wmb_api.entity.User;
+import com.enigma.wmb_api.entity.UserCredential;
 import com.enigma.wmb_api.model.request.UpdateStatusRequest;
 import com.enigma.wmb_api.model.request.UserRequest;
 import com.enigma.wmb_api.model.response.UserResponse;
 import com.enigma.wmb_api.repo.UserRepo;
+import com.enigma.wmb_api.service.UserCredentialService;
 import com.enigma.wmb_api.service.UserService;
 import com.enigma.wmb_api.specification.MenuSpecification;
 import com.enigma.wmb_api.specification.UserSpecification;
@@ -22,6 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
     private final UserRepo repo;
+    private final UserCredentialService credentialService;
     @Override
     public User create(User request) {
         return repo.saveAndFlush(request);
@@ -35,6 +39,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse updateStatusById(UpdateStatusRequest request) {
+        UserCredential credential = credentialService.getByContext();
+
+        if (!credential.getId().equals(request.getUserId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, ResponseMessage.ERROR_FORBIDDEN);
+        }
+
         User user = findOrFail(request.getUserId());
         user.setStatus(request.getStatus());
         repo.saveAndFlush(user);

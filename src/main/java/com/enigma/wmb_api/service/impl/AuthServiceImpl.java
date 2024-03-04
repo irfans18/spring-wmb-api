@@ -12,16 +12,23 @@ import com.enigma.wmb_api.service.AuthService;
 import com.enigma.wmb_api.service.JwtService;
 import com.enigma.wmb_api.service.RoleService;
 import com.enigma.wmb_api.service.UserService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +39,35 @@ public class AuthServiceImpl implements AuthService {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+
+    @Value("${wmb_api.username.superadmin}")
+    private String superAdminUsername;
+    @Value("${wmb_api.password.superadmin}")
+    private String superAdminPassword;
+
+
+    @Transactional(rollbackFor = Exception.class)
+    @PostConstruct // berguna untuk mengeksekusi method yg akan dijalankan pada saat aplikasi pertama kali dijalankan
+    public void initSuperAdmin() {
+        Optional<UserCredential> currentUser = credentialRepo.findFirstByUsername(superAdminUsername);
+        if (currentUser.isPresent()) return;
+
+        Role superAdmin = roleService.getOrCreate(UserRole.ROLE_SUPER_ADMIN);
+        Role admin = roleService.getOrCreate(UserRole.ROLE_ADMIN);
+        Role customer = roleService.getOrCreate(UserRole.ROLE_CUSTOMER);
+
+        UserCredential account = UserCredential.builder()
+                .username(superAdminUsername)
+                .password(passwordEncoder.encode(superAdminPassword))
+                .role(List.of(superAdmin, admin, customer))
+                .isEnable(true)
+                .build();
+
+        credentialRepo.save(account);
+    }
+
+
 
     private RegisterResponse register(AuthRequest request, Role role) {
         UserCredential credential = UserCredential.builder()
@@ -71,20 +107,24 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
+    @Transactional(readOnly = true)
     @Override
     public LoginResponse login(AuthRequest request) {
-        UserCredential credential = credentialRepo.findFirstByUsername(request.getUsername()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "invalid credential"));
-        boolean matches = passwordEncoder.matches(request.getPassword(), credential.getPassword());
-        if (matches) {
-            List<String> roles = credential.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-            return LoginResponse.builder()
-                    .username(credential.getUsername())
-                    .roles(roles)
-                    .token(jwtService.generateToken())
-                    .build();
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "invalid credentials");
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                request.getUsername(),
+                request.getPassword()
+        );
+        Authentication authenticate = authenticationManager.authenticate(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        UserCredential credential = (UserCredential) authenticate.getPrincipal();
+        String token = jwtService.generateToken(credential);
+        return LoginResponse.builder()
+                .username(credential.getUsername())
+                .roles(credential.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
+                .token(token)
+                .build();
     }
+
 
     @Override
     public UserCredential findOrFail(String id) {
