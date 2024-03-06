@@ -2,7 +2,6 @@ package com.enigma.wmb_api.service.impl;
 
 import com.enigma.wmb_api.entity.Menu;
 import com.enigma.wmb_api.model.request.MenuRequest;
-import com.enigma.wmb_api.model.response.MenuResponse;
 import com.enigma.wmb_api.repo.MenuRepo;
 import com.enigma.wmb_api.service.MenuService;
 import com.enigma.wmb_api.specification.MenuSpecification;
@@ -23,23 +22,14 @@ import java.util.List;
 public class MenuServiceImpl implements MenuService {
     private final MenuRepo repo;
     @Override
-    public Menu create(Menu request) {
-        return repo.saveAndFlush(request);
-    }
-
-    @Override
-    public MenuResponse create(MenuRequest request) {
+    public Menu create(MenuRequest request) {
         Menu menu = Menu.builder()
                 .name(request.getName())
                 .price(request.getPrice())
                 .build();
-        repo.saveAndFlush(menu);
-
-        return MenuResponse.builder()
-                .name(menu.getName())
-                .price(menu.getPrice())
-                .build();
+        return repo.saveAndFlush(menu);
     }
+
 
     @Override
     public Menu findOrFail(String id) {
@@ -47,24 +37,13 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Menu update(Menu request) {
-        findOrFail(request.getId());
-        return repo.saveAndFlush(request);
-    }
-
-    @Override
-    public MenuResponse update(MenuRequest request) {
+    public Menu update(MenuRequest request) {
         Menu menu = findOrFail(request.getId());
         menu.setName(request.getName());
         menu.setPrice(request.getPrice());
-
-        repo.saveAndFlush(menu);
-
-        return MenuResponse.builder()
-                .name(menu.getName())
-                .price(menu.getPrice())
-                .build();
+        return repo.saveAndFlush(menu);
     }
+
 
     @Override
     public void delete(String id) {

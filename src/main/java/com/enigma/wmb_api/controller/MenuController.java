@@ -7,13 +7,13 @@ import com.enigma.wmb_api.model.request.MenuRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
 import com.enigma.wmb_api.model.response.PagingResponse;
 import com.enigma.wmb_api.service.MenuService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +23,26 @@ import java.util.List;
 public class MenuController {
     private final MenuService service;
 
-    @GetMapping()
+    @PostMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<CommonResponse<Menu>> create(@RequestBody MenuRequest payload) {
+        Menu menu = service.create(payload);
+        CommonResponse<Menu> response = CommonResponse
+                .<Menu>builder()
+                .statusCode(HttpStatus.CREATED.value())
+                .message(ResponseMessage.SUCCESS_SAVE_DATA)
+                .data(menu)
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+    @GetMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<CommonResponse<List<Menu>>> getAllMenus(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
@@ -65,5 +84,36 @@ public class MenuController {
                 .build();
 
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<CommonResponse<Menu>> update(@RequestBody MenuRequest payload) {
+        Menu updated = service.update(payload);
+        CommonResponse<Menu> response = CommonResponse
+                .<Menu>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCESS_UPDATE_DATA)
+                .data(updated)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<CommonResponse<?>> delete(@RequestBody MenuRequest payload) {
+        service.delete(payload.getId());
+        CommonResponse<?> response = CommonResponse
+                .<Object>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCESS_DELETE_DATA)
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
     }
 }
