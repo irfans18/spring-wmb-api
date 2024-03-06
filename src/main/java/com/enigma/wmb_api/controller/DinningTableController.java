@@ -1,6 +1,7 @@
 package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.constant.APIUrl;
+import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.entity.DinningTable;
 import com.enigma.wmb_api.model.response.CommonResponse;
 import com.enigma.wmb_api.service.DinningTableService;
@@ -22,6 +23,8 @@ public class DinningTableController {
         List<DinningTable> tables = service.findAll();
         CommonResponse<List<DinningTable>> response = CommonResponse.<List<DinningTable>>
                 builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCESS_GET_DATA)
                 .data(tables)
                 .build();
         return ResponseEntity.ok(response);
@@ -32,7 +35,7 @@ public class DinningTableController {
         CommonResponse<DinningTable> response = CommonResponse.<DinningTable>
                 builder()
                 .statusCode(HttpStatus.CREATED.value())
-                .message("Dinning table created successfully")
+                .message(ResponseMessage.SUCCESS_SAVE_DATA)
                 .data(dinningTable)
                 .build();
         return ResponseEntity
@@ -46,7 +49,7 @@ public class DinningTableController {
         CommonResponse<DinningTable> response = CommonResponse.<DinningTable>
                 builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Dinning table updated successfully")
+                .message(ResponseMessage.SUCCESS_UPDATE_DATA)
                 .data(dinningTable)
                 .build();
         return ResponseEntity
@@ -55,13 +58,12 @@ public class DinningTableController {
     }
 
     @DeleteMapping
-    public ResponseEntity<CommonResponse<DinningTable>> delete(@RequestBody DinningTable dinningTable) {
+    public ResponseEntity<CommonResponse<?>> delete(@RequestBody DinningTable dinningTable) {
         service.delete(dinningTable.getId());
-        CommonResponse<DinningTable> response = CommonResponse.<DinningTable>
+        CommonResponse<?> response = CommonResponse.
                 builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Dinning table deleted successfully")
-                .data(dinningTable)
+                .message(ResponseMessage.SUCCESS_DELETE_DATA)
                 .build();
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -73,6 +75,8 @@ public class DinningTableController {
         DinningTable table = service.findOrFail(id);
         CommonResponse<DinningTable> response = CommonResponse.<DinningTable>
                 builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCESS_GET_DATA)
                 .data(table)
                 .build();
         return ResponseEntity.ok(response);

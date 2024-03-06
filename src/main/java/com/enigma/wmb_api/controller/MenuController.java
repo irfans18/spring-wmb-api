@@ -1,6 +1,7 @@
 package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.constant.APIUrl;
+import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.entity.Menu;
 import com.enigma.wmb_api.model.request.MenuRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
@@ -58,7 +59,7 @@ public class MenuController {
 
         CommonResponse<List<Menu>> response = CommonResponse
                 .<List<Menu>>builder()
-                .message("Get all menus success")
+                .message(ResponseMessage.SUCCESS_GET_DATA)
                 .data(menuPage.getContent())
                 .paging(paging)
                 .build();

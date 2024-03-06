@@ -1,5 +1,6 @@
 package com.enigma.wmb_api.config.security;
 
+import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.model.response.CommonResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -23,7 +24,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         CommonResponse<String> commonResponse = CommonResponse.<String>builder()
                 .statusCode(HttpServletResponse.SC_UNAUTHORIZED)
-                .message("Unauthorized")
+                .message(authException.getMessage())
                 .build();
         String s = mapper.writeValueAsString(commonResponse);
         response.getWriter().write(s);

@@ -1,6 +1,7 @@
 package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.constant.APIUrl;
+import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.model.request.AuthRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
 import com.enigma.wmb_api.model.response.LoginResponse;
@@ -31,8 +32,8 @@ public class AuthController {
         RegisterResponse resgistered = service.resgisterUser(request);
         CommonResponse<RegisterResponse> response = CommonResponse
                 .<RegisterResponse>builder()
-                .message("Register success")
                 .statusCode(HttpStatus.CREATED.value())
+                .message(ResponseMessage.SUCCESS_SAVE_DATA)
                 .data(resgistered)
                 .build();
         return ResponseEntity
@@ -50,7 +51,8 @@ public class AuthController {
 
         CommonResponse<LoginResponse> response = CommonResponse
                 .<LoginResponse>builder()
-                .message("Login success")
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCESS_LOGIN)
                 .data(login)
                 .build();
         return ResponseEntity.ok(response);

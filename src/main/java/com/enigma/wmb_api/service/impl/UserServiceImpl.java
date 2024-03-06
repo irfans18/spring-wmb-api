@@ -58,6 +58,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse update(UserRequest request) {
+        UserCredential credential = credentialService.getByContext();
+        if (!credential.getId().equals(request.getId()) || credential.getAuthorities().contains("ROLE_ADMIN") || credential.getAuthorities().contains("ROLE_SUPER_ADMIN"))  {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, ResponseMessage.ERROR_FORBIDDEN);
+        }
         User user = User.builder()
                 .name(request.getName())
                 .phoneNumber(request.getPhoneNumber())
@@ -75,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findOrFail(String id) {
-        return repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ResponseMessage.ERROR_USER_NOT_FOUND));
     }
 
     @Override
@@ -91,7 +95,7 @@ public class UserServiceImpl implements UserService {
         Pageable pageRequest = PageRequest.of(request.getPage()-1, request.getSize(), sortBy);
         Specification<User> specification = UserSpecification.getSpecification(request);
         Page<User> userPage = repo.findAll(specification, pageRequest);
-        PageImpl<UserResponse> response = new PageImpl<>(
+        return new PageImpl<>(
                 userPage.getContent().stream().map(user -> UserResponse
                         .builder()
                         .id(user.getId())
@@ -103,7 +107,6 @@ public class UserServiceImpl implements UserService {
                 userPage.getPageable(),
                 userPage.getTotalElements()
         );
-        return response;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.constant.APIUrl;
+import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.model.request.TransactionRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
 import com.enigma.wmb_api.model.response.TransactionResponse;
@@ -24,6 +25,8 @@ public class TransactionController {
 
         CommonResponse<TransactionResponse> response = CommonResponse
                 .<TransactionResponse>builder()
+                .statusCode(HttpStatus.CREATED.value())
+                .message(ResponseMessage.SUCCESS_SAVE_DATA)
                 .data(transactionResponse)
                 .build();
         return ResponseEntity
@@ -36,6 +39,8 @@ public class TransactionController {
         TransactionResponse transactionResponse = service.findById(id);
         CommonResponse<TransactionResponse> response = CommonResponse
                 .<TransactionResponse>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCESS_GET_DATA)
                 .data(transactionResponse)
                 .build();
         return ResponseEntity.ok(response);
@@ -45,6 +50,8 @@ public class TransactionController {
         List<TransactionResponse> transactionResponses = service.findAll();
         CommonResponse<List<TransactionResponse>> response = CommonResponse
                 .<List<TransactionResponse>>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCESS_GET_DATA)
                 .data(transactionResponses)
                 .build();
         return ResponseEntity.ok(response);

@@ -33,13 +33,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 UserCredential userCredential = userCredentialService.findOrFail(claims.getUserCredentialId());
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userCredential.getUsername(),
+                        userCredential.getId(),
                         null,
                         userCredential.getAuthorities()
                 );
                 authentication.setDetails(new WebAuthenticationDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
             }
         } catch (Exception e) {
             log.error("Cannot set user authentication: {}", e.getMessage());

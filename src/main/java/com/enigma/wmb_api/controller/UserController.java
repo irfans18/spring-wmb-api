@@ -1,6 +1,7 @@
 package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.constant.APIUrl;
+import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.entity.User;
 import com.enigma.wmb_api.model.request.UpdateStatusRequest;
 import com.enigma.wmb_api.model.request.UserRequest;
@@ -59,7 +60,7 @@ public class UserController {
         CommonResponse<List<UserResponse>> response = CommonResponse
                 .<List<UserResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Get all user successfully")
+                .message(ResponseMessage.SUCCESS_GET_DATA)
                 .data(userPage.getContent())
                 .paging(paging)
                 .build();
@@ -77,7 +78,7 @@ public class UserController {
         CommonResponse<UserResponse> response = CommonResponse
                 .<UserResponse>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Update user successfully")
+                .message(ResponseMessage.SUCCESS_UPDATE_DATA)
                 .data(user)
                 .build();
         return ResponseEntity.ok(response);
@@ -95,7 +96,7 @@ public class UserController {
         CommonResponse<UserResponse> response = CommonResponse
                 .<UserResponse>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Update user status successfully")
+                .message(ResponseMessage.SUCCESS_UPDATE_DATA)
                 .data(user)
                 .build();
         return ResponseEntity.ok(response);

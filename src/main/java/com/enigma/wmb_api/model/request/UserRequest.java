@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 public class UserRequest extends FilterRequest {
-    @NotBlank
+    private String id;
     private String name;
     private String phoneNumber;
     private Boolean status;
