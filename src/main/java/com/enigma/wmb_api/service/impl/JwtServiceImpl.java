@@ -24,14 +24,16 @@ import java.time.Instant;
 public class JwtServiceImpl implements JwtService {
     private final String JWT_SECRET;
     private final String ISSUER;
-    private final Long EXPIRATION_TIME = 60 * 15L;
+    private final long EXPIRATION_TIME;
 
     public JwtServiceImpl(
-            @Value("${enigma_shop.jwt.secret_key}") String jwtSecret,
-            @Value("${enigma_shop.jwt.issuer}") String issuer
+            @Value("${wmb_api.jwt.secret_key}") String jwtSecret,
+            @Value("${wmb_api.jwt.issuer}") String issuer,
+            @Value("${wmb_api.jwt.expiration}") long expirationTime
     ) {
         JWT_SECRET = jwtSecret;
         ISSUER = issuer;
+        EXPIRATION_TIME = expirationTime;
     }
 
     @Override
