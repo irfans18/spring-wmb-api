@@ -2,7 +2,7 @@ package com.enigma.wmb_api.service.impl;
 
 import com.enigma.wmb_api.entity.Menu;
 import com.enigma.wmb_api.model.request.MenuRequest;
-import com.enigma.wmb_api.model.response.DinningTableResponse;
+import com.enigma.wmb_api.model.request.update.MenuNewOrUpdateRequest;
 import com.enigma.wmb_api.model.response.MenuResponse;
 import com.enigma.wmb_api.repo.MenuRepo;
 import com.enigma.wmb_api.service.MenuService;
@@ -19,7 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class MenuServiceImpl implements MenuService {
     private final MenuRepo repo;
     @Override
-    public MenuResponse create(MenuRequest request) {
+    public MenuResponse create(MenuNewOrUpdateRequest request) {
         Menu menu = Menu.builder()
                 .name(request.getName())
                 .price(request.getPrice())
@@ -34,7 +34,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public MenuResponse update(MenuRequest request) {
+    public MenuResponse update(MenuNewOrUpdateRequest request) {
         Menu menu = findOrFail(request.getId());
         menu.setName(request.getName());
         menu.setPrice(request.getPrice());

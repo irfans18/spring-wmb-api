@@ -3,6 +3,7 @@ package com.enigma.wmb_api.controller;
 import com.enigma.wmb_api.constant.APIUrl;
 import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.model.request.MenuRequest;
+import com.enigma.wmb_api.model.request.update.MenuNewOrUpdateRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
 import com.enigma.wmb_api.model.response.MenuResponse;
 import com.enigma.wmb_api.model.response.PagingResponse;
@@ -32,7 +33,7 @@ public class MenuController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<MenuResponse>> create(@RequestBody MenuRequest payload) {
+    public ResponseEntity<CommonResponse<MenuResponse>> create(@RequestBody MenuNewOrUpdateRequest payload) {
         MenuResponse menu = service.create(payload);
         CommonResponse<MenuResponse> response = CommonResponse
                 .<MenuResponse>builder()
@@ -97,7 +98,7 @@ public class MenuController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<MenuResponse>> update(@RequestBody MenuRequest payload) {
+    public ResponseEntity<CommonResponse<MenuResponse>> update(@RequestBody MenuNewOrUpdateRequest payload) {
         MenuResponse updated = service.update(payload);
         CommonResponse<MenuResponse> response = CommonResponse
                 .<MenuResponse>builder()
@@ -108,13 +109,14 @@ public class MenuController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "Delete Menu")
+    @Operation(summary = "Delete Menu By Id")
     @DeleteMapping(
+            value = "/{id}/delete",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<?>> delete(@RequestBody MenuRequest payload) {
-        service.delete(payload.getId());
+    public ResponseEntity<CommonResponse<?>> delete(@PathVariable String id){
+        service.delete(id);
         CommonResponse<?> response = CommonResponse
                 .<Object>builder()
                 .statusCode(HttpStatus.OK.value())
