@@ -1,17 +1,17 @@
 package com.enigma.wmb_api.service;
 
 import com.enigma.wmb_api.entity.DinningTable;
-
-import java.util.List;
+import com.enigma.wmb_api.model.request.DinningTableRequest;
+import com.enigma.wmb_api.model.response.DinningTableResponse;
+import org.springframework.data.domain.Page;
 
 public interface DinningTableService {
     DinningTable findOrFail(String id);
-    DinningTable findByNameOrFail(String name);
 
-    DinningTable create(DinningTable dinningTable);
+    DinningTableResponse create(DinningTable dinningTable);
 
-    DinningTable update(DinningTable dinningTable);
-    List<DinningTable> findAll();
+    DinningTableResponse update(DinningTable dinningTable);
+    Page<DinningTableResponse> findAll(DinningTableRequest request);
 
     void delete(String id);
 
