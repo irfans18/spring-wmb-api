@@ -2,6 +2,7 @@ package com.enigma.wmb_api.service.impl;
 
 import com.enigma.wmb_api.entity.Menu;
 import com.enigma.wmb_api.model.request.MenuRequest;
+import com.enigma.wmb_api.model.response.MenuResponse;
 import com.enigma.wmb_api.repo.MenuRepo;
 import com.enigma.wmb_api.service.MenuService;
 import com.enigma.wmb_api.specification.MenuSpecification;
@@ -22,12 +23,12 @@ import java.util.List;
 public class MenuServiceImpl implements MenuService {
     private final MenuRepo repo;
     @Override
-    public Menu create(MenuRequest request) {
+    public MenuResponse create(MenuRequest request) {
         Menu menu = Menu.builder()
                 .name(request.getName())
                 .price(request.getPrice())
                 .build();
-        return repo.saveAndFlush(menu);
+        return mapToResponse(repo.saveAndFlush(menu));
     }
 
 
@@ -37,11 +38,11 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Menu update(MenuRequest request) {
+    public MenuResponse update(MenuRequest request) {
         Menu menu = findOrFail(request.getId());
         menu.setName(request.getName());
         menu.setPrice(request.getPrice());
-        return repo.saveAndFlush(menu);
+        return mapToResponse(repo.saveAndFlush(menu));
     }
 
 
@@ -51,10 +52,6 @@ public class MenuServiceImpl implements MenuService {
         repo.delete(menu);
     }
 
-    @Override
-    public List<Menu> findAll() {
-        return repo.findAll();
-    }
 
     @Override
     public Page<Menu> findAll(MenuRequest request) {
@@ -63,5 +60,13 @@ public class MenuServiceImpl implements MenuService {
         Pageable pageRequest = PageRequest.of(request.getPage()-1, request.getSize(), sortBy);
         Specification<Menu> specification = MenuSpecification.getSpecification(request);
         return repo.findAll(specification, pageRequest);
+    }
+
+    private MenuResponse mapToResponse(Menu menu) {
+        return MenuResponse.builder()
+                .id(menu.getId())
+                .name(menu.getName())
+                .price(menu.getPrice())
+                .build();
     }
 }

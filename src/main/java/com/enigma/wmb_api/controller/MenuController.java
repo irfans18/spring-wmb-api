@@ -5,6 +5,7 @@ import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.entity.Menu;
 import com.enigma.wmb_api.model.request.MenuRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
+import com.enigma.wmb_api.model.response.MenuResponse;
 import com.enigma.wmb_api.model.response.PagingResponse;
 import com.enigma.wmb_api.service.MenuService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,10 +34,10 @@ public class MenuController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<Menu>> create(@RequestBody MenuRequest payload) {
-        Menu menu = service.create(payload);
-        CommonResponse<Menu> response = CommonResponse
-                .<Menu>builder()
+    public ResponseEntity<CommonResponse<MenuResponse>> create(@RequestBody MenuRequest payload) {
+        MenuResponse menu = service.create(payload);
+        CommonResponse<MenuResponse> response = CommonResponse
+                .<MenuResponse>builder()
                 .statusCode(HttpStatus.CREATED.value())
                 .message(ResponseMessage.SUCCESS_SAVE_DATA)
                 .data(menu)
@@ -98,10 +99,10 @@ public class MenuController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<Menu>> update(@RequestBody MenuRequest payload) {
-        Menu updated = service.update(payload);
-        CommonResponse<Menu> response = CommonResponse
-                .<Menu>builder()
+    public ResponseEntity<CommonResponse<MenuResponse>> update(@RequestBody MenuRequest payload) {
+        MenuResponse updated = service.update(payload);
+        CommonResponse<MenuResponse> response = CommonResponse
+                .<MenuResponse>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(ResponseMessage.SUCCESS_UPDATE_DATA)
                 .data(updated)
