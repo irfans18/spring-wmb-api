@@ -29,4 +29,7 @@ public class Menu {
     @JsonManagedReference
     @OneToMany(mappedBy = "menu")
     private Collection<BillDetail> billDetails;
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
 }

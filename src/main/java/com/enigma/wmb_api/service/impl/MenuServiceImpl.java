@@ -1,10 +1,13 @@
 package com.enigma.wmb_api.service.impl;
 
+import com.enigma.wmb_api.constant.APIUrl;
+import com.enigma.wmb_api.entity.Image;
 import com.enigma.wmb_api.entity.Menu;
 import com.enigma.wmb_api.model.request.MenuRequest;
 import com.enigma.wmb_api.model.request.update.MenuNewOrUpdateRequest;
 import com.enigma.wmb_api.model.response.MenuResponse;
 import com.enigma.wmb_api.repo.MenuRepo;
+import com.enigma.wmb_api.service.ImageService;
 import com.enigma.wmb_api.service.MenuService;
 import com.enigma.wmb_api.specification.MenuSpecification;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +21,17 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService {
     private final MenuRepo repo;
+    private final ImageService imageService;
     @Override
     public MenuResponse create(MenuNewOrUpdateRequest request) {
-        Menu menu = Menu.builder()
+        Menu.MenuBuilder menu = Menu.builder()
                 .name(request.getName())
-                .price(request.getPrice())
-                .build();
-        return mapToResponse(repo.saveAndFlush(menu));
+                .price(request.getPrice());
+        if (request.getImage() != null) {
+            Image image = imageService.create(request.getImage());
+            menu.image(image);
+        }
+        return mapToResponse(repo.saveAndFlush(menu.build()));
     }
 
 
@@ -36,6 +43,12 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public MenuResponse update(MenuNewOrUpdateRequest request) {
         Menu menu = findOrFail(request.getId());
+        if (request.getImage() != null) {
+            Image update = imageService.create(request.getImage());
+            String idDelete = menu.getImage() == null ? null : menu.getImage().getId();
+            menu.setImage(update);
+            if (idDelete != null) imageService.deleteById(idDelete);
+        }
         menu.setName(request.getName());
         menu.setPrice(request.getPrice());
         return mapToResponse(repo.saveAndFlush(menu));
@@ -74,6 +87,7 @@ public class MenuServiceImpl implements MenuService {
                 .id(menu.getId())
                 .name(menu.getName())
                 .price(menu.getPrice())
+                .imageUrl(menu.getImage() == null ? null : APIUrl.PRODUCT_IMAGE_DOWNLOAD_API + menu.getImage().getId())
                 .build();
     }
 }

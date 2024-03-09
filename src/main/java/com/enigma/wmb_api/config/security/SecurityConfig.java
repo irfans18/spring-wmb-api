@@ -1,5 +1,6 @@
 package com.enigma.wmb_api.config.security;
 
+import com.enigma.wmb_api.constant.APIUrl;
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/transaction/status").permitAll()
+                        .requestMatchers(HttpMethod.GET,APIUrl.PRODUCT_IMAGE_DOWNLOAD_API + "*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
