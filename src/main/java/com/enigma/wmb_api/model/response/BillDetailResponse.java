@@ -13,6 +13,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Builder
 public class BillDetailResponse {
+    private String id;
     private String menuId;
     private Integer qty;
     private Integer price;

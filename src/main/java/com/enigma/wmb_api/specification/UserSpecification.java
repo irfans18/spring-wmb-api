@@ -1,7 +1,6 @@
 package com.enigma.wmb_api.specification;
 
 import com.enigma.wmb_api.entity.User;
-import com.enigma.wmb_api.model.request.SearchCustomerRequest;
 import com.enigma.wmb_api.model.request.UserRequest;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;

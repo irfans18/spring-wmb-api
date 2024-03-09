@@ -16,7 +16,9 @@ import java.util.Date;
 public class TransactionResponse {
     private Date trxDate;
     private String userId;
-    private String dinningTableName;
+    private String dinningTableId;
     private String transType;
     private Collection<BillDetailResponse> billDetails;
+    private PaymentResponse payment;
+
 }

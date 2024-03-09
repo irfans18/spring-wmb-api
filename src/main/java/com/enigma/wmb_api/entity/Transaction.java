@@ -40,4 +40,8 @@ public class Transaction {
     @OneToMany(mappedBy = "transaction")
     private Collection<BillDetail> billDetails;
 
+    @OneToOne
+    @JoinColumn(name = "payment_id", unique = true)
+    private Payment payment;
+
 }

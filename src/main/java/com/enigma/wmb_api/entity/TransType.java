@@ -15,7 +15,7 @@ import java.util.Collection;
 @Entity
 @Table(name = ConstantTable.TRANS_TYPE, schema = "public", catalog = "wmb_api_db")
 public class TransType {
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
     private String id;

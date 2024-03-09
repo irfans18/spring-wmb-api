@@ -4,7 +4,6 @@ import com.enigma.wmb_api.entity.BillDetail;
 import com.enigma.wmb_api.entity.Menu;
 import com.enigma.wmb_api.entity.Transaction;
 import com.enigma.wmb_api.model.request.BillDetailRequest;
-import com.enigma.wmb_api.model.response.BillDetailResponse;
 import com.enigma.wmb_api.repo.BillDetailRepo;
 import com.enigma.wmb_api.service.BillDetailService;
 import com.enigma.wmb_api.service.MenuService;
@@ -22,7 +21,7 @@ public class BillDetailServiceImpl implements BillDetailService {
     private final MenuService menuService;
 
     @Override
-    public BillDetailResponse create(BillDetailRequest request, Transaction trx) {
+    public BillDetail create(BillDetailRequest request, Transaction trx) {
         Menu menu = menuService.findOrFail(request.getMenuId());
         BillDetail billDetail = BillDetail
                 .builder()
@@ -31,13 +30,9 @@ public class BillDetailServiceImpl implements BillDetailService {
                 .transaction(trx)
                 .price(request.getQty() * menu.getPrice())
                 .build();
-        repo.saveAndFlush(billDetail);
 
-        return BillDetailResponse.builder()
-                .qty(billDetail.getQty())
-                .price(billDetail.getPrice())
-                .menuId(billDetail.getMenu().getId())
-                .build();
+        return repo.saveAndFlush(billDetail);
+
     }
 
     @Override
