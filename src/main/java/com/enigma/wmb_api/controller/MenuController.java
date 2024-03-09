@@ -51,7 +51,7 @@ public class MenuController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<List<Menu>>> getAllMenus(
+    public ResponseEntity<CommonResponse<List<MenuResponse>>> getAllMenus(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(defaultValue = "name") String sortBy,
@@ -73,7 +73,7 @@ public class MenuController {
                 .price(price)
                 .build();
 
-        Page<Menu> menuPage = service.findAll(request);
+        Page<MenuResponse> menuPage = service.findAll(request);
 
         PagingResponse paging = PagingResponse.builder()
                 .totalPages(menuPage.getTotalPages())
@@ -84,8 +84,8 @@ public class MenuController {
                 .hasPrevious(menuPage.getPageable().hasPrevious())
                 .build();
 
-        CommonResponse<List<Menu>> response = CommonResponse
-                .<List<Menu>>builder()
+        CommonResponse<List<MenuResponse>> response = CommonResponse
+                .<List<MenuResponse>>builder()
                 .message(ResponseMessage.SUCCESS_GET_DATA)
                 .data(menuPage.getContent())
                 .paging(paging)

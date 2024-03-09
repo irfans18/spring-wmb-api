@@ -26,7 +26,7 @@ public class Menu {
     @Basic
     @Column(name = "price")
     private Integer price;
-    // @JsonManagedReference
-    // @OneToMany(mappedBy = "menu")
-    // private Collection<BillDetail> billDetails;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "menu")
+    private Collection<BillDetail> billDetails;
 }
