@@ -2,7 +2,6 @@ package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.constant.APIUrl;
 import com.enigma.wmb_api.constant.ResponseMessage;
-import com.enigma.wmb_api.entity.Menu;
 import com.enigma.wmb_api.model.request.MenuRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
 import com.enigma.wmb_api.model.response.MenuResponse;
@@ -11,7 +10,6 @@ import com.enigma.wmb_api.service.MenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.enigma.wmb_api.model.request;
+package com.enigma.wmb_api.model.request.update;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateStatusRequest {
+public class statusUpdateRequest {
 
     private String userId;
     private Boolean status;

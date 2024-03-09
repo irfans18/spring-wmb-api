@@ -4,6 +4,7 @@ import com.enigma.wmb_api.constant.APIUrl;
 import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.entity.DinningTable;
 import com.enigma.wmb_api.model.request.DinningTableRequest;
+import com.enigma.wmb_api.model.request.update.DinningTableNewOrUpdateRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
 import com.enigma.wmb_api.model.response.DinningTableResponse;
 import com.enigma.wmb_api.model.response.PagingResponse;
@@ -69,13 +70,13 @@ public class DinningTableController {
 
     @Operation(summary = "Create Dinning Table")
     @PostMapping
-    public ResponseEntity<CommonResponse<DinningTable>> create(@RequestBody DinningTable dinningTable) {
-        service.create(dinningTable);
-        CommonResponse<DinningTable> response = CommonResponse.<DinningTable>
+    public ResponseEntity<CommonResponse<DinningTableResponse>> create(@RequestBody DinningTableNewOrUpdateRequest dinningTable) {
+        DinningTableResponse saved = service.create(dinningTable);
+        CommonResponse<DinningTableResponse> response = CommonResponse.<DinningTableResponse>
                 builder()
                 .statusCode(HttpStatus.CREATED.value())
                 .message(ResponseMessage.SUCCESS_SAVE_DATA)
-                .data(dinningTable)
+                .data(saved)
                 .build();
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -84,13 +85,13 @@ public class DinningTableController {
 
     @Operation(summary = "Update Dinning Table")
     @PutMapping
-    public ResponseEntity<CommonResponse<DinningTable>> update(@RequestBody DinningTable dinningTable) {
-        service.update(dinningTable);
-        CommonResponse<DinningTable> response = CommonResponse.<DinningTable>
+    public ResponseEntity<CommonResponse<DinningTableResponse>> update(@RequestBody DinningTableNewOrUpdateRequest dinningTable) {
+        DinningTableResponse updated = service.update(dinningTable);
+        CommonResponse<DinningTableResponse> response = CommonResponse.<DinningTableResponse>
                 builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(ResponseMessage.SUCCESS_UPDATE_DATA)
-                .data(dinningTable)
+                .data(updated)
                 .build();
         return ResponseEntity
                 .status(HttpStatus.OK)

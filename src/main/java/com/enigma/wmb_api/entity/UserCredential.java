@@ -29,6 +29,8 @@ public class UserCredential implements UserDetails {
     private Boolean isEnable;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> role;
+    @OneToOne(mappedBy = "credential")
+    private User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

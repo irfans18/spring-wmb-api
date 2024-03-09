@@ -4,6 +4,7 @@ import com.enigma.wmb_api.entity.UserCredential;
 import com.enigma.wmb_api.repo.UserCredentialRepo;
 import com.enigma.wmb_api.service.UserCredentialService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +27,7 @@ public class UserCredentialServiceImpl implements UserCredentialService {
     @Override
     public UserCredential getByContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return repo.findFirstByUsername(authentication.getPrincipal().toString())
+        return repo.findById(authentication.getPrincipal().toString())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
 
     }

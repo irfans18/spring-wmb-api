@@ -2,8 +2,8 @@ package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.constant.APIUrl;
 import com.enigma.wmb_api.constant.ResponseMessage;
-import com.enigma.wmb_api.entity.User;
-import com.enigma.wmb_api.model.request.UpdateStatusRequest;
+import com.enigma.wmb_api.model.request.update.UserUpdateRequest;
+import com.enigma.wmb_api.model.request.update.statusUpdateRequest;
 import com.enigma.wmb_api.model.request.UserRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
 import com.enigma.wmb_api.model.response.PagingResponse;
@@ -31,7 +31,7 @@ public class UserController {
     private final UserService service;
 
     @Operation(summary = "Get All User")
-    @PreAuthorize("hasAnyRole('ADMIN','SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<CommonResponse<List<UserResponse>>> getAllUser(
             @RequestParam(required = false) String name,
@@ -75,12 +75,15 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
     @Operation(summary = "Update User")
+    @PreAuthorize("hasAnyRole('ADMIN') || #request.id == @userCredentialServiceImpl.getByContext().getUser().getId()")
     @PutMapping(
             value = "/update",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<UserResponse>> update(@RequestBody UserRequest request) {
+    public ResponseEntity<CommonResponse<UserResponse>> update(
+            @RequestBody UserUpdateRequest request
+    ) {
         UserResponse user = service.update(request);
         CommonResponse<UserResponse> response = CommonResponse
                 .<UserResponse>builder()
@@ -92,6 +95,7 @@ public class UserController {
     }
 
     @Operation(summary = "Update User Status By Id")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(
             value = "{id}/update",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -100,7 +104,7 @@ public class UserController {
             @PathVariable String id,
             @RequestParam(required = false) Boolean status
     ) {
-        UserResponse user = service.updateStatusById(new UpdateStatusRequest(id, status));
+        UserResponse user = service.updateStatusById(new statusUpdateRequest(id, status));
         CommonResponse<UserResponse> response = CommonResponse
                 .<UserResponse>builder()
                 .statusCode(HttpStatus.OK.value())

@@ -2,8 +2,8 @@ package com.enigma.wmb_api.service.impl;
 
 import com.enigma.wmb_api.entity.DinningTable;
 import com.enigma.wmb_api.model.request.DinningTableRequest;
+import com.enigma.wmb_api.model.request.update.DinningTableNewOrUpdateRequest;
 import com.enigma.wmb_api.model.response.DinningTableResponse;
-import com.enigma.wmb_api.model.response.UserResponse;
 import com.enigma.wmb_api.repo.DinningTableRepo;
 import com.enigma.wmb_api.service.DinningTableService;
 import com.enigma.wmb_api.specification.DinningTableSpecification;
@@ -24,13 +24,17 @@ public class DinningTableServiceImpl implements DinningTableService {
     }
 
     @Override
-    public DinningTableResponse create(DinningTable dinningTable) {
+    public DinningTableResponse create(DinningTableNewOrUpdateRequest request) {
+        DinningTable dinningTable = DinningTable.builder()
+                .name(request.getName())
+                .build();
         return mapToResponse(repo.saveAndFlush(dinningTable));
     }
 
     @Override
-    public DinningTableResponse update(DinningTable dinningTable) {
-        findOrFail(dinningTable.getId());
+    public DinningTableResponse update(DinningTableNewOrUpdateRequest request) {
+        DinningTable dinningTable = findOrFail(request.getId());
+        dinningTable.setName(request.getName());
         return mapToResponse(repo.saveAndFlush(dinningTable));
     }
 
