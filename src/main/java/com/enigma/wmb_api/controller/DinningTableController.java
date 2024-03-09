@@ -99,9 +99,9 @@ public class DinningTableController {
     }
 
     @Operation(summary = "Delete Dinning Table")
-    @DeleteMapping
-    public ResponseEntity<CommonResponse<?>> delete(@RequestBody DinningTable dinningTable) {
-        service.delete(dinningTable.getId());
+    @DeleteMapping(value = "{id}/delete")
+    public ResponseEntity<CommonResponse<?>> delete(@PathVariable String id) {
+        service.delete(id);
         CommonResponse<?> response = CommonResponse.
                 builder()
                 .statusCode(HttpStatus.OK.value())
