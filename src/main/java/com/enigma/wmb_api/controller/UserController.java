@@ -9,6 +9,9 @@ import com.enigma.wmb_api.model.response.CommonResponse;
 import com.enigma.wmb_api.model.response.PagingResponse;
 import com.enigma.wmb_api.model.response.UserResponse;
 import com.enigma.wmb_api.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -22,9 +25,12 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(APIUrl.USER)
+@Tag(name = "User", description = "User API")
+@SecurityRequirement(name = "Authorization")
 public class UserController {
     private final UserService service;
 
+    @Operation(summary = "Get All User")
     @PreAuthorize("hasAnyRole('ADMIN','SUPER_ADMIN')")
     @GetMapping
     public ResponseEntity<CommonResponse<List<UserResponse>>> getAllUser(
@@ -68,6 +74,7 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+    @Operation(summary = "Update User")
     @PutMapping(
             value = "/update",
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -84,6 +91,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Update User Status By Id")
     @PutMapping(
             value = "{id}/update",
             produces = MediaType.APPLICATION_JSON_VALUE

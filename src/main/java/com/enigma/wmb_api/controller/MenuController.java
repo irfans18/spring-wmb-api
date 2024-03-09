@@ -7,6 +7,9 @@ import com.enigma.wmb_api.model.request.MenuRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
 import com.enigma.wmb_api.model.response.PagingResponse;
 import com.enigma.wmb_api.service.MenuService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,10 +22,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Authorization")
+@Tag(name = "Menu", description = "Menu API")
 @RequestMapping(APIUrl.MENUS)
 public class MenuController {
     private final MenuService service;
 
+    @Operation(summary = "Create Menu")
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -40,6 +46,7 @@ public class MenuController {
                 .body(response);
     }
 
+    @Operation(summary = "Get All Menu")
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -86,6 +93,7 @@ public class MenuController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Update Menu")
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -101,6 +109,7 @@ public class MenuController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Delete Menu")
     @DeleteMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE

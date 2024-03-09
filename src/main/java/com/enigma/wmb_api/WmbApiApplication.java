@@ -19,8 +19,5 @@ public class WmbApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WmbApiApplication.class, args);
-
-
     }
-
 }
