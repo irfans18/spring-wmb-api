@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.List;
 @SecurityRequirement(name = "Authorization")
 @Tag(name = "Dinning Table", description = "Dinning Table API")
 @RequestMapping(APIUrl.DINNING_TABLE)
+@PreAuthorize("hasAnyRole('ADMIN')")
 public class DinningTableController {
     private final DinningTableService service;
 

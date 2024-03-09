@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class MenuController {
     private final MenuService service;
 
     @Operation(summary = "Create Menu")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -94,6 +96,7 @@ public class MenuController {
     }
 
     @Operation(summary = "Update Menu")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -110,6 +113,7 @@ public class MenuController {
     }
 
     @Operation(summary = "Delete Menu By Id")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(
             value = "/{id}/delete",
             consumes = MediaType.APPLICATION_JSON_VALUE,
