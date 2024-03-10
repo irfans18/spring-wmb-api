@@ -86,9 +86,9 @@ public class TransactionServiceImpl implements TransactionService {
         }
         if (request.getDinningTableId() != null) {
             table = tableService.findOrFail(request.getDinningTableId());
-            trxType = trxTypeService.findOrFail(TransactionType.DINE_IN.value);
+            trxType = trxTypeService.getOrCreate(TransactionType.DINE_IN.value);
         } else {
-            trxType = trxTypeService.findOrFail(TransactionType.TAKE_AWAY.value);
+            trxType = trxTypeService.getOrCreate(TransactionType.TAKE_AWAY.value);
         }
 
         Transaction transaction = Transaction
@@ -123,12 +123,14 @@ public class TransactionServiceImpl implements TransactionService {
                 .build();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateStatus(TransactionStatusUpdateRequest request) {
         Transaction trx = repo.findById(request.getOrderId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ResponseMessage.ERROR_NOT_FOUND));
         trx.getPayment().setTransactionStatus(request.getTransactionStatus());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Resource getReport(ReportRequest request) {
         Date startDate = DateUtil.getDateRange(request.getPeriod()).startDate();

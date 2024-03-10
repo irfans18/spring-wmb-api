@@ -15,6 +15,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -22,6 +23,8 @@ import org.springframework.web.server.ResponseStatusException;
 public class MenuServiceImpl implements MenuService {
     private final MenuRepo repo;
     private final ImageService imageService;
+
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public MenuResponse create(MenuNewOrUpdateRequest request) {
         Menu.MenuBuilder menu = Menu.builder()
@@ -40,6 +43,7 @@ public class MenuServiceImpl implements MenuService {
         return repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu not found"));
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public MenuResponse update(MenuNewOrUpdateRequest request) {
         Menu menu = findOrFail(request.getId());
@@ -55,6 +59,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(String id) {
         Menu menu = findOrFail(id);
@@ -62,6 +67,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
 
+    @Transactional(readOnly = true)
     @Override
     public Page<MenuResponse> findAll(MenuRequest request) {
         if (request.getPage() <= 0) request.setPage(1);
