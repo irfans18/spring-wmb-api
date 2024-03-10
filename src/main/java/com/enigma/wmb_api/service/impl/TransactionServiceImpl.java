@@ -48,9 +48,10 @@ public class TransactionServiceImpl implements TransactionService {
         return repo.findAll().stream().map(trx -> TransactionResponse
                 .builder()
                 .trxDate(trx.getTrxDate())
-                .userId(trx.getUser().getId())
-                .dinningTableId(trx.getDinningTable().getName())
+                .userId(trx.getUser() == null ? "Guest" : trx.getUser().getId())
+                .dinningTableId(trx.getDinningTable() == null ? null : trx.getDinningTable().getName())
                 .transType(trx.getTrxType().getDescription())
+                .payment(trx.getPayment() == null ? null : mapToResponse(trx.getPayment()))
                 .build()
         ).toList();
     }
