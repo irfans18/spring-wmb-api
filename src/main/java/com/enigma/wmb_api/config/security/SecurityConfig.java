@@ -41,22 +41,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/transaction/status").permitAll()
-                        .requestMatchers(HttpMethod.GET,APIUrl.PRODUCT_IMAGE_DOWNLOAD_API + "*").permitAll()
+                        .requestMatchers(HttpMethod.GET,APIUrl.MENU_IMAGE_DOWNLOAD_API + "*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(cfg -> cfg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
-
-        // .csrf(AbstractHttpConfigurer::disable)
-        // .authorizeRequests()
-        // .antMatchers("/api/auth/**").permitAll()
-        // .anyRequest().authenticated()
-        // .and()
-        // .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil))
-        // .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
-
-
     }
 
     @Bean

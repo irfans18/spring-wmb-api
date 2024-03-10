@@ -2,6 +2,7 @@ package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.constant.APIUrl;
 import com.enigma.wmb_api.service.ImageService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -27,7 +28,8 @@ public class ImageController {
     //     return ResponseEntity.accepted().body(response);
     // }
 
-    @GetMapping(APIUrl.PRODUCT_IMAGE_DOWNLOAD_API + "{id}")
+    @Operation(summary = "Get Menu Picture")
+    @GetMapping(APIUrl.MENU_IMAGE_DOWNLOAD_API + "{id}")
     public ResponseEntity<Resource> getImage(@PathVariable("id") String id) {
         Resource image = service.findOrFail(id);
         String headerValue = String.format("attachment; filename=%s", image.getFilename());

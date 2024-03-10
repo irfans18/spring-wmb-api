@@ -1,10 +1,8 @@
 package com.enigma.wmb_api.controller;
 
-import com.enigma.wmb_api.constant.APIUrl;
-import com.enigma.wmb_api.constant.ResponseMessage;
-import com.enigma.wmb_api.constant.TransactionStatus;
-import com.enigma.wmb_api.constant.UserRole;
+import com.enigma.wmb_api.constant.*;
 import com.enigma.wmb_api.entity.Role;
+import com.enigma.wmb_api.model.request.ReportRequest;
 import com.enigma.wmb_api.model.request.TransactionRequest;
 import com.enigma.wmb_api.model.request.update.TransactionStatusUpdateRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
@@ -15,12 +13,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -74,6 +72,7 @@ public class TransactionController {
                 .build();
         return ResponseEntity.ok(response);
     }
+
     @Operation(summary = "Get All Transaction")
     @GetMapping
     public ResponseEntity<CommonResponse<List<TransactionResponse>>> getAllTransactions() {
@@ -87,6 +86,7 @@ public class TransactionController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Update Transaction Status")
     @PostMapping(
             path = "/status",
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -102,5 +102,26 @@ public class TransactionController {
                 .statusCode(HttpStatus.OK.value())
                 .message(ResponseMessage.SUCCESS_UPDATE_DATA)
                 .build());
+    }
+
+    @Operation(summary = "Get Transaction Report")
+    @GetMapping("/report")
+    public ResponseEntity<Resource> getReport(
+            @RequestParam(name = "period", defaultValue = "DAILY") ReportPeriod period,
+            @RequestParam(name ="fileType", defaultValue = "CSV") FileType fileType,
+            @RequestParam(name ="isSummarized", defaultValue = "false") boolean isSummarized
+    ) {
+        ReportRequest request = ReportRequest.builder()
+                .period(period)
+                .fileType(fileType)
+                .isSummarized(isSummarized)
+                .build();
+
+        Resource csvReport = service.getReport(request);
+        String headerValue = String.format("inline; filename=%s", csvReport.getFilename());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
+                .body(csvReport);
     }
 }

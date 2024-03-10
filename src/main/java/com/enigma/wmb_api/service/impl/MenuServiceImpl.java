@@ -75,6 +75,7 @@ public class MenuServiceImpl implements MenuService {
                         .id(menu.getId())
                         .name(menu.getName())
                         .price(menu.getPrice())
+                        .imageUrl(menu.getImage() == null ? null : APIUrl.MENU_IMAGE_DOWNLOAD_API + menu.getImage().getId())
                         .build()
                 ).toList(),
                 pages.getPageable(),
@@ -87,7 +88,7 @@ public class MenuServiceImpl implements MenuService {
                 .id(menu.getId())
                 .name(menu.getName())
                 .price(menu.getPrice())
-                .imageUrl(menu.getImage() == null ? null : APIUrl.PRODUCT_IMAGE_DOWNLOAD_API + menu.getImage().getId())
+                .imageUrl(menu.getImage() == null ? null : APIUrl.MENU_IMAGE_DOWNLOAD_API + menu.getImage().getId())
                 .build();
     }
 }
