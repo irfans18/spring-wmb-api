@@ -93,7 +93,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public RegisterResponse resgisterUser(AuthRequest request) throws DataIntegrityViolationException {
+    public RegisterResponse registerUser(AuthRequest request) throws DataIntegrityViolationException {
         Role role = roleService.getOrCreate(UserRole.ROLE_CUSTOMER);
 
         return register(request, role);

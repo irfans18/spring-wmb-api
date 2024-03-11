@@ -33,7 +33,7 @@ public class AuthController {
     )
     public ResponseEntity<CommonResponse<RegisterResponse>> register(@RequestBody AuthRequest request) {
 
-        RegisterResponse resgistered = service.resgisterUser(request);
+        RegisterResponse resgistered = service.registerUser(request);
         CommonResponse<RegisterResponse> response = CommonResponse
                 .<RegisterResponse>builder()
                 .statusCode(HttpStatus.CREATED.value())

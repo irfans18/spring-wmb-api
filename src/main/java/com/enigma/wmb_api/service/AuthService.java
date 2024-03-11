@@ -7,7 +7,7 @@ import com.enigma.wmb_api.model.response.LoginResponse;
 import com.enigma.wmb_api.model.response.RegisterResponse;
 
 public interface AuthService {
-    RegisterResponse resgisterUser(AuthRequest request);
+    RegisterResponse registerUser(AuthRequest request);
     RegisterResponse resgisterAdmin(AuthRequest request);
     LoginResponse login(AuthRequest request);
     UserCredential findOrFail(String id);
