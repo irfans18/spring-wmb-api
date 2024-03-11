@@ -1,13 +1,11 @@
 package com.enigma.wmb_api.service.impl;
 
-import com.enigma.wmb_api.constant.TransactionType;
+import com.enigma.wmb_api.constant.enums.TransactionType;
 import com.enigma.wmb_api.entity.TransType;
 import com.enigma.wmb_api.repo.TransTypeRepo;
 import com.enigma.wmb_api.service.TransTypeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor

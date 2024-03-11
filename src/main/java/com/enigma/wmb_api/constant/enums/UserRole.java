@@ -1,4 +1,4 @@
-package com.enigma.wmb_api.constant;
+package com.enigma.wmb_api.constant.enums;
 
 public enum UserRole {
     ROLE_SUPER_ADMIN,

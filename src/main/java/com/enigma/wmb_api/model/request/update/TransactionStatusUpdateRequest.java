@@ -1,6 +1,6 @@
 package com.enigma.wmb_api.model.request.update;
 
-import com.enigma.wmb_api.constant.TransactionStatus;
+import com.enigma.wmb_api.constant.enums.TransactionStatus;
 import lombok.*;
 
 @Setter

@@ -1,6 +1,6 @@
 package com.enigma.wmb_api.repo;
 
-import com.enigma.wmb_api.constant.TransactionStatus;
+import com.enigma.wmb_api.constant.enums.TransactionStatus;
 import com.enigma.wmb_api.entity.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

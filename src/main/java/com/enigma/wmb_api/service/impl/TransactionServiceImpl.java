@@ -1,6 +1,7 @@
 package com.enigma.wmb_api.service.impl;
 
 import com.enigma.wmb_api.constant.*;
+import com.enigma.wmb_api.constant.enums.TransactionType;
 import com.enigma.wmb_api.entity.*;
 import com.enigma.wmb_api.model.DailyReportModel;
 import com.enigma.wmb_api.model.request.ReportRequest;
@@ -11,20 +12,16 @@ import com.enigma.wmb_api.model.response.PaymentResponse;
 import com.enigma.wmb_api.model.response.TransactionResponse;
 import com.enigma.wmb_api.repo.TransactionRepo;
 import com.enigma.wmb_api.service.*;
-import com.enigma.wmb_api.util.FileUtil;
+import com.enigma.wmb_api.util.ReportUtil;
 import com.enigma.wmb_api.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,7 +37,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final DinningTableService tableService;
     private final TransTypeService trxTypeService;
     private final PaymentService paymentService;
-    private final FileUtil fileUtil;
+    private final ReportUtil reportUtil;
 
     @Transactional(readOnly = true)
     @Override
@@ -150,7 +147,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         String filename = request.getPeriod().name().toLowerCase() + "_report_" + LocalDate.now() + ".csv";
-        return fileUtil.generateCsv(dailyReport, filename, request.isSummarized());
+        return reportUtil.generateCsv(dailyReport, filename, request.isSummarized());
     }
 
     private static DailyReportModel mapToReport(Transaction transaction) {

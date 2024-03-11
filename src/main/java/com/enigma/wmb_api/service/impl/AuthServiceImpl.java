@@ -1,6 +1,6 @@
 package com.enigma.wmb_api.service.impl;
 
-import com.enigma.wmb_api.constant.UserRole;
+import com.enigma.wmb_api.constant.enums.UserRole;
 import com.enigma.wmb_api.entity.Role;
 import com.enigma.wmb_api.entity.User;
 import com.enigma.wmb_api.entity.UserCredential;

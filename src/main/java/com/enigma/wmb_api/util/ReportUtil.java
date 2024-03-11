@@ -16,13 +16,13 @@ import java.nio.file.Path;
 import java.util.List;
 
 @Component
-public class FileUtil {
+public class ReportUtil {
     public final Path directoryPath;
 
     private final String CSV_HEADER_DAILY = "date\ttrx_id\tcustomer_id\tdesc\ttable_name\ttotal\tstatus";
     private final String CSV_HEADER_MONTHLY = "date\ttotal";
 
-    public FileUtil(
+    public ReportUtil(
             @Value("${wmb_api.multipart.path-location}") Path directoryPath
     ) {
         this.directoryPath = directoryPath;

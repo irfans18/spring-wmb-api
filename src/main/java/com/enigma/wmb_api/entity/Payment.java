@@ -1,7 +1,7 @@
 package com.enigma.wmb_api.entity;
 
 import com.enigma.wmb_api.constant.ConstantTable;
-import com.enigma.wmb_api.constant.TransactionStatus;
+import com.enigma.wmb_api.constant.enums.TransactionStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

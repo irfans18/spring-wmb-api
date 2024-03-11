@@ -1,6 +1,6 @@
 package com.enigma.wmb_api.util;
 
-import com.enigma.wmb_api.constant.ReportPeriod;
+import com.enigma.wmb_api.constant.enums.ReportPeriod;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

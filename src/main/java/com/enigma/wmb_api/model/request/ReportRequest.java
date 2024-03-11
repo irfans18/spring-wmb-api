@@ -1,7 +1,7 @@
 package com.enigma.wmb_api.model.request;
 
-import com.enigma.wmb_api.constant.FileType;
-import com.enigma.wmb_api.constant.ReportPeriod;
+import com.enigma.wmb_api.constant.enums.FileType;
+import com.enigma.wmb_api.constant.enums.ReportPeriod;
 import lombok.Builder;
 import lombok.Data;
 

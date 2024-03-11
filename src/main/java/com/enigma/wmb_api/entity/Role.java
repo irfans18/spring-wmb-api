@@ -1,6 +1,6 @@
 package com.enigma.wmb_api.entity;
 
-import com.enigma.wmb_api.constant.UserRole;
+import com.enigma.wmb_api.constant.enums.UserRole;
 import com.enigma.wmb_api.constant.ConstantTable;
 import jakarta.persistence.*;
 import lombok.*;

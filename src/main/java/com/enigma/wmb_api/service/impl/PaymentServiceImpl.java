@@ -1,8 +1,6 @@
 package com.enigma.wmb_api.service.impl;
 
-import com.enigma.wmb_api.constant.TransactionStatus;
-import com.enigma.wmb_api.entity.BillDetail;
-import com.enigma.wmb_api.entity.Menu;
+import com.enigma.wmb_api.constant.enums.TransactionStatus;
 import com.enigma.wmb_api.entity.Payment;
 import com.enigma.wmb_api.entity.Transaction;
 import com.enigma.wmb_api.model.request.payment.PaymentDetailRequest;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
