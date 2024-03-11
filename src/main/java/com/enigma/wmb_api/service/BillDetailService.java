@@ -9,7 +9,4 @@ import java.util.List;
 public interface BillDetailService {
 
     BillDetail create(BillDetailRequest billDetail, Transaction trx);
-    List<BillDetail> createBatch(List<BillDetail> billDetails);
-    BillDetail findOrFail(String id);
-    List<BillDetail> findAll();
 }

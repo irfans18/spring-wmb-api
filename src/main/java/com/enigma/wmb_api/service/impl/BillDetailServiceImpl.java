@@ -34,19 +34,4 @@ public class BillDetailServiceImpl implements BillDetailService {
         return repo.saveAndFlush(billDetail);
 
     }
-
-    @Override
-    public List<BillDetail> createBatch(List<BillDetail> billDetails) {
-        return repo.saveAllAndFlush(billDetails);
-    }
-
-    @Override
-    public BillDetail findOrFail(String id) {
-        return null;
-    }
-
-    @Override
-    public List<BillDetail> findAll() {
-        return null;
-    }
 }
