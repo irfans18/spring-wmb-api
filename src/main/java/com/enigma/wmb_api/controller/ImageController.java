@@ -17,17 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ImageController {
     private final ImageService service;
 
-    // @PostMapping("/api/tes-upload")
-    // public ResponseEntity<CommonResponse<Image>> uploadFile(@RequestPart("image") MultipartFile file) {
-    //     Image image = service.create(file);
-    //     CommonResponse<Image> response = CommonResponse.<Image>builder()
-    //             .statusCode(HttpStatus.CREATED.value())
-    //             .message("success")
-    //             .data(image)
-    //             .build();
-    //     return ResponseEntity.accepted().body(response);
-    // }
-
     @Operation(summary = "Get Menu Picture")
     @GetMapping(APIUrl.MENU_IMAGE_DOWNLOAD_API + "{id}")
     public ResponseEntity<Resource> getImage(@PathVariable("id") String id) {
