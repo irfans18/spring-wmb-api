@@ -83,9 +83,9 @@ public class TransactionServiceImpl implements TransactionService {
         }
         if (request.getDinningTableId() != null) {
             table = tableService.findOrFail(request.getDinningTableId());
-            trxType = trxTypeService.getOrCreate(TransactionType.DINE_IN.value);
+            trxType = trxTypeService.getOrCreate(TransactionType.DINE_IN);
         } else {
-            trxType = trxTypeService.getOrCreate(TransactionType.TAKE_AWAY.value);
+            trxType = trxTypeService.getOrCreate(TransactionType.TAKE_AWAY);
         }
 
         Transaction transaction = Transaction

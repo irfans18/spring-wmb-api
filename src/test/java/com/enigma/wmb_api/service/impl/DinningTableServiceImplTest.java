@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestReporter;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -186,7 +187,7 @@ class DinningTableServiceImplTest {
 
 
     @Test
-    void delete_WhenSuccess_ShouldDelete()  {
+    void delete_WhenExist_ShouldDelete()  {
         // Given
         String id = "validId";
         DinningTable dinningTable = DinningTable.builder()
@@ -199,8 +200,11 @@ class DinningTableServiceImplTest {
         service.delete(id);
 
         // Then
-        verify(repo, times(1)).findById(id);
-        verify(repo, times(1)).deleteById(id);
+        ArgumentCaptor<String> idCaptor = ArgumentCaptor.forClass(String.class);
+
+        verify(repo, times(1)).findById(idCaptor.capture());
+        verify(repo, times(1)).deleteById(idCaptor.capture());
+        assertEquals(id, idCaptor.getValue());
     }
 
     @Test
