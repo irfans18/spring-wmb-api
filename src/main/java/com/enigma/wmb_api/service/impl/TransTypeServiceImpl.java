@@ -13,14 +13,8 @@ public class TransTypeServiceImpl implements TransTypeService {
     private final TransTypeRepo repo;
 
     @Override
-    public TransType getOrCreate(String transType) {
-        return repo.findById(transType).orElseGet(
-                () -> repo.save(TransType.builder()
-                        .id(transType)
-                        .description(TransactionType.valueOf(transType).name())
-                        .build()
-                )
-        );
+    public TransType getOrCreate(TransactionType transType) {
+        return repo.findById(transType.value).orElseGet(
+                () -> repo.saveAndFlush(transType.getTransType()));
     }
-
 }
