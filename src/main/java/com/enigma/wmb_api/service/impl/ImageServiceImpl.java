@@ -4,6 +4,7 @@ import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.entity.Image;
 import com.enigma.wmb_api.repo.ImageRepo;
 import com.enigma.wmb_api.service.ImageService;
+import com.enigma.wmb_api.util.FileUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -23,24 +24,17 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
     private final ImageRepo repo;
-    private final Path directoryPath;
+    private final FileUtil fileUtil;
 
-    @Autowired
-    public ImageServiceImpl(
-            ImageRepo repo,
-            @Value("${wmb_api.multipart.path-location}") Path directoryPath
-    ) {
-        this.repo = repo;
-        this.directoryPath = directoryPath;
-    }
 
     @PostConstruct
     public void init() {
-        if (!Files.exists(directoryPath)) {
+        if (!fileUtil.exists()) {
             try {
-                Files.createDirectory(directoryPath);
+                fileUtil.createDirectory();
             } catch (IOException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
             }
@@ -50,20 +44,18 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Image create(MultipartFile file) {
 
-        if(!List.of("image/png", "image/jpeg", "image/jpg", "image/svg+xml").contains(file.getContentType())) {
+        if (!List.of("image/png", "image/jpeg", "image/jpg", "image/svg+xml").contains(file.getContentType())) {
             throw new ConstraintViolationException(ResponseMessage.ERROR_INVALID_FILE_TYPE, null);
         }
 
-        String uniqueFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        Path path = directoryPath.resolve(uniqueFileName);
 
         try {
-            Files.copy(file.getInputStream(), path);
+            FileUtil.CreateResult result = fileUtil.create(file);
 
             Image image = Image
                     .builder()
-                    .name(uniqueFileName)
-                    .path(path.toString())
+                    .name(result.uniqueFileName())
+                    .path(result.path().toString())
                     .size(file.getSize())
                     .contentType(file.getContentType())
                     .build();
@@ -75,11 +67,11 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Resource findOrFail(String id) {
-        Image image = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ResponseMessage.ERROR_NOT_FOUND));
-
         try {
+            Image image = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ResponseMessage.ERROR_NOT_FOUND));
+
             Path path = Paths.get(image.getPath());
-            if (Files.notExists(path)) {
+            if (!fileUtil.exists(path)) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, ResponseMessage.ERROR_NOT_FOUND);
             }
 
@@ -94,10 +86,10 @@ public class ImageServiceImpl implements ImageService {
         try {
             Image image = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ResponseMessage.ERROR_NOT_FOUND));
             Path path = Paths.get(image.getPath());
-            if (!Files.exists(path)) {
+            if (!fileUtil.exists(path)) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, ResponseMessage.ERROR_NOT_FOUND);
             }
-            Files.delete(path);
+            fileUtil.delete(path);
             repo.deleteById(id);
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
