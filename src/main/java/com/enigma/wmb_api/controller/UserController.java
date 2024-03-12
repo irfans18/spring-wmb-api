@@ -3,7 +3,7 @@ package com.enigma.wmb_api.controller;
 import com.enigma.wmb_api.constant.APIUrl;
 import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.model.request.update.UserUpdateRequest;
-import com.enigma.wmb_api.model.request.update.statusUpdateRequest;
+import com.enigma.wmb_api.model.request.update.StatusUpdateRequest;
 import com.enigma.wmb_api.model.request.UserRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
 import com.enigma.wmb_api.model.response.PagingResponse;
@@ -102,9 +102,9 @@ public class UserController {
     )
     public ResponseEntity<CommonResponse<UserResponse>> updateStatusById(
             @PathVariable String id,
-            @RequestParam(required = false) Boolean status
+            @RequestParam Boolean status
     ) {
-        UserResponse user = service.updateStatusById(new statusUpdateRequest(id, status));
+        UserResponse user = service.updateStatusById(new StatusUpdateRequest(id, status));
         CommonResponse<UserResponse> response = CommonResponse
                 .<UserResponse>builder()
                 .statusCode(HttpStatus.OK.value())

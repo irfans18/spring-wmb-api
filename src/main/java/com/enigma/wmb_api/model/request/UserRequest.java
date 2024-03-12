@@ -18,4 +18,14 @@ public class UserRequest extends FilterRequest {
     private String name;
     private String phoneNumber;
     private Boolean status;
+
+    public String getPathVariable() {
+        return "?name=" + name +
+                "&phoneNumber=" + phoneNumber +
+                "&status="+ status +
+                "&page="+ getPage() +
+                "&size=" + getSize() +
+                "&sortBy="+ getSortBy() +
+                "&direction=" + getDirection();
+    }
 }

@@ -4,7 +4,7 @@ import com.enigma.wmb_api.constant.ResponseMessage;
 import com.enigma.wmb_api.entity.User;
 import com.enigma.wmb_api.entity.UserCredential;
 import com.enigma.wmb_api.model.request.update.UserUpdateRequest;
-import com.enigma.wmb_api.model.request.update.statusUpdateRequest;
+import com.enigma.wmb_api.model.request.update.StatusUpdateRequest;
 import com.enigma.wmb_api.model.request.UserRequest;
 import com.enigma.wmb_api.model.response.UserResponse;
 import com.enigma.wmb_api.repo.UserRepo;
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public UserResponse updateStatusById(statusUpdateRequest request) {
+    public UserResponse updateStatusById(StatusUpdateRequest request) {
         UserCredential credential = credentialService.getByContext();
 
         if (!credential.getId().equals(request.getUserId())) {

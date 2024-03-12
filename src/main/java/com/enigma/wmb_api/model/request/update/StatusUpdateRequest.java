@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class statusUpdateRequest {
+public class StatusUpdateRequest {
 
     private String userId;
     private Boolean status;
