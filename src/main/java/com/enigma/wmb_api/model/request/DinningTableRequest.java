@@ -18,4 +18,12 @@ import lombok.experimental.SuperBuilder;
 public class DinningTableRequest extends FilterRequest {
     private String id;
     private String name;
+
+    public String getPathVariable() {
+        return "?name=" + name +
+                "&page="+ getPage() +
+                "&size=" + getSize() +
+                "&sortBy="+ getSortBy() +
+                "&direction=" + getDirection();
+    }
 }

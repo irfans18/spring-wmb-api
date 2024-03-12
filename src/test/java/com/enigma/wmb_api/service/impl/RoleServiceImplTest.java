@@ -19,7 +19,6 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @Slf4j
-@Tag("Role Service Test")
 class RoleServiceImplTest {
     @Mock private RoleRepo repo;
     private RoleService service;

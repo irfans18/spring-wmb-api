@@ -1,6 +1,5 @@
 package com.enigma.wmb_api.service.impl;
 
-import com.enigma.wmb_api.constant.records.TestMessage;
 import com.enigma.wmb_api.entity.DinningTable;
 import com.enigma.wmb_api.model.request.DinningTableRequest;
 import com.enigma.wmb_api.model.request.update.DinningTableNewOrUpdateRequest;
@@ -8,7 +7,6 @@ import com.enigma.wmb_api.model.response.DinningTableResponse;
 import com.enigma.wmb_api.repo.DinningTableRepo;
 import com.enigma.wmb_api.service.DinningTableService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestReporter;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +25,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
