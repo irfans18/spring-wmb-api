@@ -8,6 +8,8 @@ import com.enigma.wmb_api.model.request.payment.PaymentItemDetailRequest;
 import com.enigma.wmb_api.model.request.payment.PaymentRequest;
 import com.enigma.wmb_api.repo.PaymentRepo;
 import com.enigma.wmb_api.service.PaymentService;
+import com.enigma.wmb_api.util.PaymentClientUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -20,25 +22,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-
+@RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
-    private final String MIDTRANS_API_KEY;
-    private final String MIDTRANS_SNAP_URL;
-    private final PaymentRepo repo;
-    private final RestClient restClient;
 
-    @Autowired
-    public PaymentServiceImpl(
-            @Value("${midtrans.api.key}") String midtransApiKey,
-            @Value("${midtrans.api.snap-url}") String midtransSnapUrl,
-            PaymentRepo repo,
-            RestClient restClient
-    ) {
-        MIDTRANS_API_KEY = midtransApiKey;
-        MIDTRANS_SNAP_URL = midtransSnapUrl;
-        this.repo = repo;
-        this.restClient = restClient;
-    }
+    private final PaymentRepo repo;
+    private final PaymentClientUtil client;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -70,15 +58,15 @@ public class PaymentServiceImpl implements PaymentService {
                 .build();
 
         // TODO: Call Midtrans API
-        ResponseEntity<Map<String, String>> response = restClient.post()
-                .uri(MIDTRANS_SNAP_URL)
-                .header("Authorization", "Basic " + MIDTRANS_API_KEY)
-                .body(paymentRequest)
-                .retrieve()
-                .toEntity( new ParameterizedTypeReference<>() {
-                });
+        // ResponseEntity<Map<String, String>> response = restClient.post()
+        //         .uri(MIDTRANS_SNAP_URL)
+        //         .header("Authorization", "Basic " + MIDTRANS_API_KEY)
+        //         .body(paymentRequest)
+        //         .retrieve()
+        //         .toEntity( new ParameterizedTypeReference<>() {
+        //         });
         // TODO: Return PaymentResponse
-        Map<String, String> body = response.getBody();
+        Map<String, String> body = client.requestPayment(paymentRequest);
 
         Payment payment = Payment.builder()
                 .token(body.get("token"))
