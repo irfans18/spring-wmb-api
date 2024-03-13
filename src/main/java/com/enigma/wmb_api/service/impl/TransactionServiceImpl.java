@@ -17,6 +17,7 @@ import com.enigma.wmb_api.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,8 +65,9 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionResponse findById(String id) {
         return repo.findById(id).map(trx -> TransactionResponse
                 .builder()
-                .userId(trx.getUser().getId())
-                .dinningTableId(trx.getDinningTable().getName())
+                .id(trx.getId())
+                .userId( trx.getUser() == null ? "Guest" : trx.getUser().getId())
+                .dinningTableId( trx.getDinningTable() == null ? null : trx.getDinningTable().getName())
                 .transType(trx.getTrxType().getDescription())
                 .trxDate(trx.getTrxDate())
                 .build()
@@ -111,6 +113,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         return TransactionResponse
                 .builder()
+                .id(transaction.getId())
                 .trxDate(transaction.getTrxDate())
                 .userId(request.getUserId())
                 .transType(transaction.getTrxType().getDescription())
@@ -123,7 +126,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateStatus(TransactionStatusUpdateRequest request) {
-        Transaction trx = repo.findById(request.getOrderId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ResponseMessage.ERROR_NOT_FOUND));
+        Transaction trx = findOrFail(request.getOrderId());
         trx.getPayment().setTransactionStatus(request.getTransactionStatus());
     }
 

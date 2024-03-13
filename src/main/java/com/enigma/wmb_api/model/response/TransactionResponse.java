@@ -14,6 +14,7 @@ import java.util.Date;
 @Setter
 @Builder
 public class TransactionResponse {
+    private String id;
     private Date trxDate;
     private String userId;
     private String dinningTableId;
