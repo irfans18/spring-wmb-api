@@ -2,6 +2,7 @@ package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.constant.APIUrl;
 import com.enigma.wmb_api.constant.ResponseMessage;
+import com.enigma.wmb_api.constant.enums.UserRole;
 import com.enigma.wmb_api.model.request.AuthRequest;
 import com.enigma.wmb_api.model.response.CommonResponse;
 import com.enigma.wmb_api.model.response.LoginResponse;
@@ -45,46 +46,6 @@ class AuthControllerTest {
     private ObjectMapper mapper;
 
 
-
-    /* @Test
-    @WithMockUser(username = "sumanto", roles = {"CUSTOMER"})
-    void register_WhenSuccess_ShouldReturnResponse() {
-        // Given
-        AuthRequest request = AuthRequest.builder()
-                .username("newUser")
-                .password("password123")
-                .build();
-        RegisterResponse registered = RegisterResponse.builder()
-                .username("newUser")
-                .roles(List.of("ROLE_CUSTOMER"))
-                .build();
-        CommonResponse<RegisterResponse> expectedResponse = CommonResponse.<RegisterResponse>builder()
-                .statusCode(HttpStatus.CREATED.value())
-                .message(ResponseMessage.SUCCESS_SAVE_DATA)
-                .data(registered)
-                .build();
-
-        // Stubbing
-        when(service.registerUser(any())).thenReturn(registered);
-
-        AuthController controller = new AuthController(service);
-
-        // When
-        ResponseEntity<CommonResponse<RegisterResponse>> responseEntity = controller.register(request);
-
-        // Then
-        assertAll(
-                "Register User",
-                () -> assertEquals(expectedResponse.getData().getUsername(), responseEntity.getBody().getData().getUsername()),
-                () -> assertEquals(expectedResponse.getData().getRoles(), responseEntity.getBody().getData().getRoles()),
-                () -> assertEquals(expectedResponse.getStatusCode(), responseEntity.getStatusCode().value()),
-                () -> assertEquals(expectedResponse.getMessage(), responseEntity.getBody().getMessage()),
-                () -> assertEquals(expectedResponse.getData(), responseEntity.getBody().getData())
-        );
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        verify(service, times(1)).registerUser(any());
-    } */
-
     @Test
     void register_WhenSuccess_ShouldReturnResponse() throws Exception {
         // Given
@@ -115,11 +76,47 @@ class AuthControllerTest {
                             () -> assertEquals(registered.getUsername(), response.getData().getUsername()),
                             () -> assertEquals(registered.getRoles(), response.getData().getRoles()),
                             () -> assertEquals(HttpStatus.CREATED.value(), response.getStatusCode()),
-                            () -> assertEquals(ResponseMessage.SUCCESS_SAVE_DATA, response.getMessage()),
-                            () -> assertEquals(registered.getUsername(), response.getData().getUsername())
+                            () -> assertEquals(ResponseMessage.SUCCESS_SAVE_DATA, response.getMessage())
                     );
                 }).andDo(print());
+        verify(service, times(1)).registerUser(any());
+    }
 
+    @Test
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    void registerAdmin_WhenSuccess_ShouldReturnResponse() throws Exception {
+        // Given
+        AuthRequest payload = AuthRequest.builder()
+                .username("newUser")
+                .password("password123")
+                .build();
+        RegisterResponse registered = RegisterResponse.builder()
+                .username("newUser")
+                .roles(List.of(UserRole.ROLE_ADMIN.name()))
+                .build();
+
+        String stringJson = mapper.writeValueAsString(payload);
+
+        // Stubbing
+        when(service.resgisterAdmin(any())).thenReturn(registered);
+
+        // When
+        mockMvc.perform(post(APIUrl.AUTH + "/register/admin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(stringJson))
+                .andExpect(status().isCreated())
+                .andDo(result -> {
+                    CommonResponse<RegisterResponse> response = mapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+                    });
+                    assertAll(
+                            "Register Admin",
+                            () -> assertEquals(registered.getUsername(), response.getData().getUsername()),
+                            () -> assertEquals(registered.getRoles(), response.getData().getRoles()),
+                            () -> assertEquals(HttpStatus.CREATED.value(), response.getStatusCode()),
+                            () -> assertEquals(ResponseMessage.SUCCESS_SAVE_DATA, response.getMessage())
+                    );
+                }).andDo(print());
+        verify(service, times(1)).resgisterAdmin(any());
     }
 
 
@@ -161,6 +158,6 @@ class AuthControllerTest {
                     );
 
                 }).andDo(print());
-
+        verify(service, times(1)).login(any());
     }
 }
